@@ -11,7 +11,7 @@ Official SDK for TraceFlow telemetry.
 ## Installation
 
 ```bash
-npm install traceflow-sdk
+npm install @traceflowtelemetry/traceflowtelemetry-sdk
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ npm install traceflow-sdk
 
 ```typescript
 import express from 'express';
-import { TraceFlowSDK, traceFlowMiddleware } from 'traceflow-sdk';
+import { TraceFlowSDK, traceFlowMiddleware } from '@traceflowtelemetry/traceflowtelemetry-sdk';
 
 const app = express();
 
