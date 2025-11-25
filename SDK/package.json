@@ -1,6 +1,6 @@
 {
   "name": "@traceflowtelemetry/traceflowtelemetry-sdk",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "files": [
     "dist"
   ],
@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "publish": "npm publish --access public",
+    "publish:sdk": "npm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
