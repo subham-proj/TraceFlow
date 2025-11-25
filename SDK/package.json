@@ -1,9 +1,17 @@
 {
   "name": "@traceflowtelemetry/traceflowtelemetry-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "files": [
     "dist"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
