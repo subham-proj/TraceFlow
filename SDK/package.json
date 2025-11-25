@@ -1,6 +1,6 @@
 {
-  "name": "@traceflow/traceflow-sdk",
-  "version": "1.0.0",
+  "name": "@traceflowtelemetry/traceflowtelemetry-sdk",
+  "version": "1.0.1",
   "files": [
     "dist"
   ],
