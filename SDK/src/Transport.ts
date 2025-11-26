@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import { BatchPayload } from "./types";
-import { LOG_PREFIX, ERROR_PREFIX } from "./constants";
+import * as logger from "./utils/logger";
 
 const DISK_BUFFER_PATH = path.join(os.tmpdir(), "traceflow-buffer");
 
@@ -24,7 +24,7 @@ export const sendBatch = async (
   try {
     await sendWithRetry(payload, collectorUrl);
   } catch (error) {
-    console.error(`${ERROR_PREFIX} Failed to send batch after retries:`, error);
+    logger.error("Failed to send batch after retries:", error);
     if (enableDiskFallback) {
       await saveToDiskAsync(payload);
     }
@@ -68,8 +68,8 @@ const saveToDiskAsync = async (payload: BatchPayload): Promise<void> => {
     await fs.promises.writeFile(tempFilepath, JSON.stringify(payload));
     await fs.promises.rename(tempFilepath, filepath);
 
-    console.log(`${LOG_PREFIX} Saved batch to disk (atomic): ${filepath}`);
+    logger.info(`Saved batch to disk (atomic): ${filepath}`);
   } catch (err) {
-    console.error(`${ERROR_PREFIX} Failed to save batch to disk:`, err);
+    logger.error("Failed to save batch to disk:", err);
   }
 };

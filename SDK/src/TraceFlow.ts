@@ -10,8 +10,8 @@ import {
   DEFAULT_COLLECTOR_URL,
   DEFAULT_ENABLE_DISK_FALLBACK,
   DEFAULT_FLUSH_INTERVAL_MS,
-  LOG_PREFIX,
 } from "./constants";
+import * as logger from "./utils/logger";
 
 export const TraceFlowSDK = (
   userOptions: TraceFlowOptions
@@ -39,7 +39,7 @@ export const TraceFlowSDK = (
       events: eventsToSend,
     };
 
-    console.log(`${LOG_PREFIX} Flushing ${eventsToSend.length} events...`);
+    logger.info(`Flushing ${eventsToSend.length} events...`);
 
     // Call the functional transport
     await sendBatch(
