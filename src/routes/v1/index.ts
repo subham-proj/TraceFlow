@@ -1,9 +1,10 @@
 import { Router } from "express";
 import ingestRoutes from "./ingest.routes";
+import authRoutes from "./auth.routes";
 
 const router = Router();
 
-// Mount feature routes
-router.use("/", ingestRoutes);
+router.use("/ingest", ingestRoutes);
+router.use("/auth", authRoutes);
 
 export default router;

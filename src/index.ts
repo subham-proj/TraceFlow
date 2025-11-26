@@ -25,5 +25,5 @@ app.get("/health", (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-  logger.info(`Ingestion server running on port ${port}`);
+  logger.info(`Server running on port ${port}`);
 });
