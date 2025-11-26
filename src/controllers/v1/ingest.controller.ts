@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import * as logger from "../../utils/logger";
 
 export const ingestEvents = async (req: Request, res: Response) => {
   try {
@@ -14,7 +15,7 @@ export const ingestEvents = async (req: Request, res: Response) => {
 
     // TODO: Authenticate request (check API key/headers)
 
-    console.log(
+    logger.info(
       "Received ingestion payload:",
       JSON.stringify(payload, null, 2)
     );
@@ -32,7 +33,7 @@ export const ingestEvents = async (req: Request, res: Response) => {
       event_count: payload.events?.length || 0,
     });
   } catch (error) {
-    console.error("Ingestion error:", error);
+    logger.error("Ingestion error:", error);
     res.status(500).json({
       status: "error",
       message: "Internal server error during ingestion",

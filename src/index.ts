@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import routes from "./routes";
+import * as logger from "./utils/logger";
 
 dotenv.config();
 
@@ -24,5 +25,5 @@ app.get("/health", (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-  console.log(`Ingestion server running on port ${port}`);
+  logger.info(`Ingestion server running on port ${port}`);
 });
