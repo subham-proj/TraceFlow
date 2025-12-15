@@ -1,0 +1,53 @@
+import { Kafka, Producer, Consumer } from "kafkajs";
+import * as logger from "../utils/logger";
+
+const kafka = new Kafka({
+  clientId: "traceflow-api",
+  brokers: [process.env.KAFKA_BROKER || "localhost:9093"],
+});
+
+const producer: Producer = kafka.producer();
+const consumer: Consumer = kafka.consumer({ groupId: "traceflow-group" });
+
+export const connectKafka = async () => {
+  try {
+    await producer.connect();
+    logger.info("Kafka Producer connected");
+
+    await consumer.connect();
+    logger.info("Kafka Consumer connected");
+  } catch (error) {
+    logger.error("Error connecting to Kafka:", error);
+  }
+};
+
+export const startConsumer = async (
+  topic: string,
+  handler: (message: string | undefined) => Promise<void>
+) => {
+  try {
+    await consumer.subscribe({ topic, fromBeginning: true });
+
+    await consumer.run({
+      eachMessage: async ({ topic, partition, message }) => {
+        const value = message.value?.toString();
+        await handler(value);
+      },
+    });
+    logger.info(`Kafka Consumer started for topic: ${topic}`);
+  } catch (error) {
+    logger.error(`Error starting consumer for topic ${topic}:`, error);
+  }
+};
+
+export const produceEvent = async (payload: any) => {
+  try {
+    await producer.send({
+      topic: "trace-events",
+      messages: [{ value: JSON.stringify(payload) }],
+    });
+    logger.info("Event produced to Kafka");
+  } catch (error) {
+    logger.error("Error producing event to Kafka:", error);
+  }
+};

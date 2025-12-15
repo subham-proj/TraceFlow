@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as logger from "../../utils/logger";
 import * as ingestService from "../../services/ingest.service";
 import { validatePayload } from "../../utils/validation";
+import { produceEvent } from "../../lib/kafka";
 
 export const ingestEvents = async (req: Request, res: Response) => {
   try {
@@ -24,6 +25,9 @@ export const ingestEvents = async (req: Request, res: Response) => {
         req.ip || "unknown"
       );
     }
+
+    // Produce to Kafka
+    await produceEvent(payload);
 
     logger.info(
       "Received ingestion payload:",
