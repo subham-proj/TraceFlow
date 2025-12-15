@@ -9,8 +9,8 @@ const sdk = TraceFlowSDK({
   org_id: "org_123",
   project_id: "proj_abc",
   service_name: "example-service",
-  collector_url: "http://localhost:9999/v1/ingest", // Intentionally invalid port to test retries/fallback
-  batch_size: 5, // Small batch size for testing
+  collector_url: "http://localhost:3000/api/v1/ingest",
+  batch_size: 5,
   flush_interval_ms: 5000,
 });
 
