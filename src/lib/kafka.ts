@@ -1,13 +1,18 @@
 import { Kafka, Producer, Consumer } from "kafkajs";
 import * as logger from "../utils/logger";
+import {
+  KAFKA_CLIENT_ID,
+  KAFKA_GROUP_ID,
+  KAFKA_TOPIC,
+} from "../config/constants";
 
 const kafka = new Kafka({
-  clientId: "traceflow-api",
+  clientId: KAFKA_CLIENT_ID,
   brokers: [process.env.KAFKA_BROKER || "localhost:9093"],
 });
 
 const producer: Producer = kafka.producer();
-const consumer: Consumer = kafka.consumer({ groupId: "traceflow-group" });
+const consumer: Consumer = kafka.consumer({ groupId: KAFKA_GROUP_ID });
 
 export const connectKafka = async () => {
   try {
@@ -43,7 +48,7 @@ export const startConsumer = async (
 export const produceEvent = async (payload: any) => {
   try {
     await producer.send({
-      topic: "trace-events",
+      topic: KAFKA_TOPIC,
       messages: [{ value: JSON.stringify(payload) }],
     });
     logger.info("Event produced to Kafka");
