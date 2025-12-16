@@ -44,14 +44,12 @@ model TraceEvent {
   orgId        String       @map("org_id")
   projectId    String       @map("project_id")
   serviceName  String       @map("service_name")
-  env          String?
   endpoint     String
   method       String
   status       Int
   latencyMs    Int          @map("latency_ms")
   responseSize Int?         @map("response_size")
   traceId      String       @map("trace_id")
-  userId       String?      @map("user_id")
   tags         Json?
   timestamp    DateTime
   createdAt    DateTime     @default(now()) @map("created_at")
