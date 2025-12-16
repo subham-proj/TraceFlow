@@ -1,19 +1,33 @@
 import { Request, Response } from "express";
 import * as logger from "../../utils/logger";
+import * as ingestService from "../../services/ingest.service";
+import { validatePayload } from "../../utils/validation";
+import { produceEvent } from "../../lib/kafka";
 
 export const ingestEvents = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
 
-    // TODO: Validate payload structure
-    // Expected structure:
-    // {
-    //   org_id: string,
-    //   project_id: string,
-    //   events: Array<TraceEvent>
-    // }
+    // Validate payload
+    const validationError = validatePayload(payload);
+    if (validationError) {
+      res.status(400).json({
+        status: "error",
+        message: validationError,
+      });
+      return;
+    }
 
-    // TODO: Authenticate request (check API key/headers)
+    // Enrich events
+    if (payload.events) {
+      payload.events = await ingestService.enrichEvents(
+        payload.events,
+        req.ip || "unknown"
+      );
+    }
+
+    // Produce to Kafka
+    await produceEvent(payload);
 
     logger.info(
       "Received ingestion payload:",

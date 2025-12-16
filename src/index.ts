@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import { connectKafka, startConsumer } from "./lib/kafka";
+import { processTraceEvent } from "./services/trace.processor";
+import { KAFKA_TOPIC } from "./config/constants";
 import routes from "./routes";
 import * as logger from "./utils/logger";
 
@@ -24,6 +27,8 @@ app.get("/health", (req, res) => {
 });
 
 // Start Server
-app.listen(port, () => {
+app.listen(port, async () => {
   logger.info(`Server running on port ${port}`);
+  await connectKafka();
+  await startConsumer(KAFKA_TOPIC, processTraceEvent);
 });
